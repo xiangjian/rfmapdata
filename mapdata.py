@@ -1,3 +1,4 @@
+#coding=utf-8
 """
 $ pip install tornado
 $ python livemap.py --port=8888
@@ -14,31 +15,60 @@ import logging
 
 import tornado.ioloop
 import tornado.web
-
+import sqlite3
 from tornado.options import define, options
 
 
 log = logging.getLogger(__name__)
-
+dbPath = 'data.db'
+def _query_db(query, args=(), one=False):
+    connection = sqlite3.connect(dbPath)
+    cur = connection.cursor()
+    cur.execute(query, args)
+    r = [dict((cur.description[i][0], value) \
+               for i, value in enumerate(row)) for row in cur.fetchall()]
+    cur.connection.close()
+    return (r[0] if r else None) if one else r
+def _execute_db(sql,args=(),one=False):
+    connection = sqlite3.connect(dbPath)
+    cur = connection.cursor()
+    cur.execute(sql, args)
+    cur.connection.commit()
+    cur.connection.close()
 
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         log.debug("open root")
-        self.redirect("/static/index.html")
+        self.render("index.html")
 
 
-
+class DataHandler(tornado.web.RequestHandler):
+    """docstring for DataHandler"""
+    def get(self):
+        """get method"""
+        dic= _query_db("select * from gis")
+        self.write(json.dumps(dic,ensure_ascii=False))
+    def post(self):
+        """ post  for gis env"""
+        dep = self.get_argument("dep")
+        id  = self.get_argument("id")
+        name= self.get_argument("name")
+        lon = self.get_argument("lon")
+        lat = self.get_argument("lat")
+        # query for only one 
+        _execute_db("insert or replace into gis (id,dep,name,lon,lat) values(?,?,?,?,?)",(id,dep,name,lon,lat))
+        self.write("OK")
 
 settings = {
-    # FIXME: Should really move maps.html into static/, and change the last
-    # empty quotes to "static" (it's in same dir for gist)
+    'template_path':os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
     'static_path': os.path.join(os.path.dirname(os.path.abspath(__file__)), "static"),
 }
 print settings
 
 application = tornado.web.Application([
         (r"/", MainHandler),
+        (r"/mapdata", DataHandler),
         ],
     **settings)
 
