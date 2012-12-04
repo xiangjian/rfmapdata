@@ -1,5 +1,4 @@
-"""Playing with tornado.websocket, to add markers to a Google Map using WebSockets
-
+"""
 $ pip install tornado
 $ python livemap.py --port=8888
 
@@ -25,6 +24,7 @@ log = logging.getLogger(__name__)
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        log.debug("open root")
         self.redirect("/static/index.html")
 
 
