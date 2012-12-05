@@ -124,6 +124,7 @@ $( "#dialog-form" ).dialog({
                   data: {id:$("#id").val(),name:$("#name").val(),dep:$("#dep").val(),lon:$("#lon").val(),lat:$("#lat").val()},
                   success: function  (data) {
                   alert(data);
+                  refreshdata();
                   }
                 });
 
