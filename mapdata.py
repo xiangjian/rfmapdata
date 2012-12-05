@@ -47,6 +47,9 @@ class DataHandler(tornado.web.RequestHandler):
     """docstring for DataHandler"""
     def get(self):
         """get method"""
+        # ajax no cache
+        self.set_header('Cache-Control', 'no-cache, must-revalidate')
+        self.set_header('Expires', '0')
         dic= _query_db("select * from gis")
         self.write(json.dumps(dic,ensure_ascii=False))
     def post(self):
