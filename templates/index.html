@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>人员座标收集 Map</title>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  <script src="http://api.map.baidu.com/api?v=1.4" type="text/javascript"></script>
-  <script src="static/map.js"></script>
-  <link href='http://fonts.googleapis.com/css?family=Convergence|Bitter|Droid+Sans|Ubuntu+Mono' rel='stylesheet' type='text/css' />
-  <script type="text/javascript">
-  </script>
-  <style type="text/css" media="screen">
-    #map {
-      position:absolute;
-      top: 0; bottom: 0; left: 0; right: 0;
-    }
-  </style>
+<title>人员座标收集 Map</title>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="http://api.map.baidu.com/api?v=1.4" type="text/javascript"></script>
+<script src="static/map.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+
+<link href='http://fonts.googleapis.com/css?family=Convergence|Bitter|Droid+Sans|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+<style type="text/css" media="screen">
+#map {
+    position:absolute;
+top: 0; bottom: 0; left: 0; right: 0;
+}
+label, input { display:block; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+</style>
 </head>
 <body>
-  <p>Loading...</p>
-  <div id="map"></div>
+<p>Loading...</p>
+<div id="map"></div>
+<div id="dialog-form" title="添加您的地址">
+<p class="validateTips">添加个人信息</p>
+
+<form>
+<fieldset>
+<label for="id">邮箱id(@前的部分)</label>
+<input type="text" name="id" id="id" value="" class="text ui-widget-content ui-corner-all" />
+<label for="name">姓名</label>
+<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+<label for="dep">部门</label>
+<input type="text" name="dep" id="dep" value="" class="text ui-widget-content ui-corner-all" />
+<input type="hidden" name="lon" id="lon" value=""/>
+<input type="hidden" name="lat" id="lat" value=""/>
+
+</fieldset>
+</form>
+</div>
+
 </body>
 </html>

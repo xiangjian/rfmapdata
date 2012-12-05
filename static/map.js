@@ -7,7 +7,10 @@ $(document).ready(function(){
         map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
         map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
         function showInfo(e){
-        alert(e.point.lng + ", " + e.point.lat);
+        //alert(e.point.lng + ", " + e.point.lat);
+        $( "#dialog-form" ).dialog( "open" );
+        $("#lat").val(e.point.lat);
+        $("#lon").val(e.point.lng);
         }
         map.addEventListener("click", showInfo);
 
@@ -37,6 +40,8 @@ $(document).ready(function(){
                 //map.setZoom(map.getZoom() + 2);
                 //改变鼠标样式
                 map.setDefaultCursor("pointer"); 
+
+
             }
             // 添加DOM元素到地图中
             map.getContainer().appendChild(div);
@@ -99,10 +104,43 @@ $(document).ready(function(){
                     });
 
         }
-        var addMarker=function()
-        {
 
-        }
+
+$( "#dialog-form" ).dialog({
+            autoOpen: false,
+            height: 450,
+            width: 350,
+            modal: true,
+            buttons: {
+                "添加": function() {
+                    var bValid = true;
+                    if ( bValid ) {
+                        $( this ).dialog( "close" );
+                    }
+
+                $.ajax({
+                  type: 'POST',
+                  url: "/mapdata",
+                  data: {id:$("#id").val(),name:$("#name").val(),dep:$("#dep").val(),lon:$("#lon").val(),lat:$("#lat").val()},
+                  success: function  (data) {
+                  alert(data);
+                  }
+                });
+
+
+
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            close: function() {
+            }
+        }); 
+
+
+     //添加默认标注
+     refreshdata();
 
 });
 
